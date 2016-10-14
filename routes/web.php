@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::get('backend/semesters/{semester}/confirm',[
+    'as' => 'semesters.delete.confirm',
+    'uses' => 'Backend\SemesterController@confirm'
+]);
+Route::resource('backend/semesters','Backend\SemesterController');
