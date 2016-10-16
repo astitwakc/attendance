@@ -4,10 +4,10 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h4 class="pull-left">Semesters</h4>
-                <a href="{{ route('semesters.create') }}">
+                <h4 class="pull-left">Blogs</h4>
+                <a href="{{ route('roles.create') }}">
                     <button class="btn btn-primary pull-right">
-                        Create New Semester
+                        Create New Role
                     </button>
                 </a>
             </div>
@@ -21,21 +21,21 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
+                        <th>Role Id</th>
                         <th>Name</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($semesters as $semester)
+                    @foreach($roles as $role)
                         <tr>
-                            <td>{{ $semester->name }}</td>
+                            <td>{{ $role->id }}</td>
+                            <td>{{ $role->name }}</td>
                             <td>
-
-
-                                <a href="{{ route('semesters.edit',$semester->id) }}">
+                                <a href="{{ route('roles.edit',$role->id) }}">
                                     <i class="ion ion-edit"></i>
                                 </a>
-                                <a href="{{ route('semesters.delete.confirm',$semester->id) }}">
+                                <a href="{{ route('roles.delete.confirm',$role->id) }}">
                                     <i class="ion ion-close-circled"></i>
                                 </a>
                             </td>

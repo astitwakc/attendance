@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Requests\SemesterFormRequest;
+use App\Http\Requests\StudentFormRequest;
 use App\Semester;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use App\Student;
 use App\Http\Controllers\Controller;
 
 /**
  * Class SemesterController
  * @package App\Http\Controllers\Backend
  */
-class SemesterController extends Controller
+class StudentController extends Controller
 {
+
+    /**
+     * @var Student
+     */
+    private $students;
 
     /**
      * @var Semester
@@ -22,11 +25,13 @@ class SemesterController extends Controller
     private $semesters;
 
     /**
-     * SemesterController constructor.
+     * StudentController constructor.
+     * @param Student $students
      * @param Semester $semesters
      */
-    public function __construct(Semester $semesters)
+    public function __construct(Student $students, Semester $semesters)
     {
+        $this->students = $students;
         $this->semesters = $semesters;
     }
 
@@ -37,9 +42,9 @@ class SemesterController extends Controller
      */
     public function index()
     {
-        $semesters = $this->semesters->all();
+        $students = $this->students->all();
 
-        return view('backend.semesters.index', compact('semesters'));
+        return view('backend.students.index', compact('students'));
     }
 
     /**
@@ -49,9 +54,11 @@ class SemesterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Semester $semester)
+    public function create(Student $student)
     {
-        return view('backend.semesters.form', compact('semester'));
+        $semester_list = $this->semesters->pluck('name','id');
+
+        return view('backend.students.form', compact('student','semester_list'));
     }
 
     /**
@@ -60,21 +67,11 @@ class SemesterController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SemesterFormRequest $request)
+    public function store(StudentFormRequest $request)
     {
-        $this->semesters->create($request->all());
-        return redirect(route('semesters.index'))->with('status', 'Semester Record Created');
-    }
+        $this->students->create($request->all());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect(route('students.index'))->with('status', 'Student Record Created');
     }
 
     /**
@@ -86,8 +83,11 @@ class SemesterController extends Controller
     public function edit($id)
     {
 
-        $semester = $this->semesters->find($id);
-        return view('backend.semesters.form', compact('semester'));
+        $semester_list = $this->semesters->pluck('name','id');
+
+        $student = $this->students->find($id);
+
+        return view('backend.students.form', compact('student','semester_list'));
     }
 
     /**
@@ -97,11 +97,13 @@ class SemesterController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StudentFormRequest $request, $id)
     {
-        $semester = $this->semesters->find($id);
-        $semester->update($request->all());
-        return redirect(route('semesters.index'))->with('status', 'Semester Record Updated');
+        $student = $this->students->find($id);
+
+        $student->update($request->all());
+
+        return redirect(route('students.index'))->with('status', 'Student Record Updated');
     }
 
 
@@ -117,7 +119,7 @@ class SemesterController extends Controller
      */
     public function confirm($id)
     {
-        return view('backend.semesters.confirm', compact('id'));
+        return view('backend.students.confirm', compact('id'));
     }
 
     /**
@@ -126,9 +128,11 @@ class SemesterController extends Controller
      */
     public function destroy($id)
     {
-        $semester = $this->semesters->find($id);
-        $semester->delete();
-        return redirect(route('semesters.index'))->with('status', 'Semester Record Updated');
+        $student = $this->students->find($id);
+
+        $student->delete();
+
+        return redirect(route('students.index'))->with('status', 'Student Record Deleted');
     }
 }
 

@@ -19,10 +19,22 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
+                @if(auth()->user()->role_id == 1)
                 <li>
                     <a href="{{route('semesters.index')}}">Semester</a>
                 </li>
-                &nbsp;
+                <li>
+                    <a href="{{route('roles.index')}}">Roles</a>
+                </li>&nbsp;
+                <li>
+                    <a href="{{route('students.index')}}">Students</a>
+                </li>&nbsp;
+                <li>
+                    <a href="{{route('users.index')}}">Users</a>
+                </li>&nbsp;
+                @endif
+
+                <li><a href="{{ route('attendance') }}">Attendance</a></li>
             </ul>
 
             <!-- Right Side Of Navbar -->
